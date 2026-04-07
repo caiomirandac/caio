@@ -1,235 +1,266 @@
 import cairosvg
 
-SVG = """<?xml version="1.0" encoding="UTF-8"?>
-<svg width="1000" height="600" viewBox="0 0 1000 600"
+# Escudo do Flamengo simplificado (minimalista, sem personagens)
+# Baseado nas cores e forma clássica do CRF
+FLAMENGO_CREST = """
+  <g transform="translate(-38,-52) scale(0.9)">
+    <!-- Shield shape -->
+    <path d="M38,4 L76,4 Q82,4 82,10 L82,44 Q82,58 60,72 Q56,75 38,85
+             Q20,75 16,72 Q-6,58 -6,44 L-6,10 Q-6,4 0,4 Z"
+          fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+
+    <!-- Listras preto e vermelho (horizontal) -->
+    <!-- faixa vermelha 1 -->
+    <clipPath id="shieldClip">
+      <path d="M38,4 L76,4 Q82,4 82,10 L82,44 Q82,58 60,72 Q56,75 38,85
+               Q20,75 16,72 Q-6,58 -6,44 L-6,10 Q-6,4 0,4 Z"/>
+    </clipPath>
+
+    <g clip-path="url(#shieldClip)">
+      <!-- fundo preto -->
+      <rect x="-10" y="0" width="100" height="90" fill="#0A0A0A"/>
+      <!-- faixa diagonal preta e vermelha clássica do Flamengo -->
+      <!-- faixas horizontais: preto, vermelho, preto, vermelho -->
+      <rect x="-10" y="0"  width="100" height="22" fill="#0A0A0A"/>
+      <rect x="-10" y="22" width="100" height="22" fill="#C8102E"/>
+      <rect x="-10" y="44" width="100" height="22" fill="#0A0A0A"/>
+      <rect x="-10" y="66" width="100" height="24" fill="#C8102E"/>
+
+      <!-- diagonal clássica (faixa branca diagonal) -->
+      <polygon points="-10,0 30,0 -10,55" fill="#FFFFFF" opacity="0.08"/>
+    </g>
+
+    <!-- Borda do escudo -->
+    <path d="M38,4 L76,4 Q82,4 82,10 L82,44 Q82,58 60,72 Q56,75 38,85
+             Q20,75 16,72 Q-6,58 -6,44 L-6,10 Q-6,4 0,4 Z"
+          fill="none" stroke="#555" stroke-width="1.2"/>
+
+    <!-- Borda interna dourada fina -->
+    <path d="M38,8 L73,8 Q78,8 78,13 L78,43 Q78,55 58,68 Q55,71 38,80
+             Q21,71 18,68 Q-2,55 -2,43 L-2,13 Q-2,8 3,8 Z"
+          fill="none" stroke="#888" stroke-width="0.5"/>
+
+    <!-- CRF monograma -->
+    <text x="38" y="52"
+          font-family="Georgia,serif"
+          font-size="18"
+          font-weight="bold"
+          fill="#FFFFFF"
+          text-anchor="middle"
+          letter-spacing="2">CRF</text>
+
+    <!-- Ano de fundação -->
+    <text x="38" y="66"
+          font-family="Arial,sans-serif"
+          font-size="7"
+          fill="rgba(255,255,255,0.55)"
+          text-anchor="middle"
+          letter-spacing="1">1895</text>
+  </g>
+"""
+
+SVG = f"""<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1100" height="580" viewBox="0 0 1100 580"
      xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <!-- fundo -->
+    <!-- fundo ambiente claro, como a foto -->
     <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#1c1c1c"/>
-      <stop offset="100%" stop-color="#111111"/>
+      <stop offset="0%" stop-color="#f2ede8"/>
+      <stop offset="100%" stop-color="#e0d8d0"/>
     </linearGradient>
 
-    <!-- corpo frontal -->
-    <linearGradient id="bodyF" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%"   stop-color="#d2d2d2"/>
-      <stop offset="10%"  stop-color="#fafafa"/>
-      <stop offset="88%"  stop-color="#fafafa"/>
-      <stop offset="100%" stop-color="#c0c0c0"/>
+    <!-- corpo caneca — cerâmica branca real -->
+    <linearGradient id="mugBody" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#d6d6d6"/>
+      <stop offset="6%"   stop-color="#f8f8f8"/>
+      <stop offset="92%"  stop-color="#f5f5f5"/>
+      <stop offset="100%" stop-color="#c8c8c8"/>
     </linearGradient>
 
-    <!-- corpo lateral -->
-    <linearGradient id="bodyS" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%"   stop-color="#c8c8c8"/>
-      <stop offset="20%"  stop-color="#f5f5f5"/>
-      <stop offset="80%"  stop-color="#f5f5f5"/>
-      <stop offset="100%" stop-color="#b8b8b8"/>
-    </linearGradient>
-
-    <!-- rim / borda -->
-    <linearGradient id="rimG" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%"   stop-color="#aaaaaa"/>
-      <stop offset="50%"  stop-color="#eeeeee"/>
-      <stop offset="100%" stop-color="#999999"/>
-    </linearGradient>
-
-    <!-- base -->
-    <linearGradient id="baseG" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%"   stop-color="#cccccc"/>
+    <!-- topo / boca -->
+    <linearGradient id="mugTop" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#bbbbbb"/>
+      <stop offset="40%"  stop-color="#e8e8e8"/>
+      <stop offset="60%"  stop-color="#e0e0e0"/>
       <stop offset="100%" stop-color="#aaaaaa"/>
     </linearGradient>
 
     <!-- cabo -->
-    <linearGradient id="canoG" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%"   stop-color="#bbbbbb"/>
-      <stop offset="60%"  stop-color="#e8e8e8"/>
-      <stop offset="100%" stop-color="#b0b0b0"/>
+    <linearGradient id="handle" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#cccccc"/>
+      <stop offset="50%"  stop-color="#f0f0f0"/>
+      <stop offset="100%" stop-color="#bbbbbb"/>
     </linearGradient>
 
-    <filter id="sombra" x="-30%" y="-15%" width="180%" height="150%">
-      <feDropShadow dx="0" dy="20" stdDeviation="28" flood-color="#000" flood-opacity="0.6"/>
+    <!-- sombra drop -->
+    <filter id="shadow" x="-25%" y="-10%" width="160%" height="140%">
+      <feDropShadow dx="4" dy="16" stdDeviation="20"
+                    flood-color="#8a7a6a" flood-opacity="0.35"/>
     </filter>
 
-    <filter id="sombraLeve" x="-30%" y="-15%" width="180%" height="150%">
-      <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#000" flood-opacity="0.45"/>
+    <!-- sombra suave caneca lateral -->
+    <filter id="shadowB" x="-25%" y="-10%" width="160%" height="140%">
+      <feDropShadow dx="4" dy="14" stdDeviation="16"
+                    flood-color="#8a7a6a" flood-opacity="0.28"/>
     </filter>
+
+    <!-- brilho interno da boca -->
+    <radialGradient id="innerMouth" cx="50%" cy="40%" r="55%">
+      <stop offset="0%"   stop-color="#c0c0c0"/>
+      <stop offset="100%" stop-color="#a0a0a0"/>
+    </radialGradient>
   </defs>
 
   <!-- ── FUNDO ── -->
-  <rect width="1000" height="600" fill="url(#bg)"/>
-  <!-- faixa vermelha topo -->
-  <rect x="0" y="0" width="1000" height="2.5" fill="#C8102E" opacity="0.8"/>
-  <!-- faixa vermelha base -->
-  <rect x="0" y="597.5" width="1000" height="2.5" fill="#C8102E" opacity="0.4"/>
+  <rect width="1100" height="580" fill="url(#bg)"/>
 
-  <!-- título do preview -->
-  <text x="500" y="36" font-family="Arial,sans-serif" font-size="10"
-        fill="#444" letter-spacing="5" text-anchor="middle">
-    CLEVERSON · FLAMENGO EDITION · DESIGN PREVIEW
+  <!-- sombra no chão das canecas -->
+  <ellipse cx="298" cy="535" rx="165" ry="16" fill="rgba(100,80,60,0.18)"/>
+  <ellipse cx="798" cy="535" rx="145" ry="14" fill="rgba(100,80,60,0.15)"/>
+
+  <!-- label discreto topo -->
+  <text x="550" y="30" font-family="Arial,sans-serif" font-size="10"
+        fill="#aaa" letter-spacing="5" text-anchor="middle">
+    CLEVERSON · FLAMENGO EDITION
   </text>
 
-  <!-- ════════════════════════════════════════
-       CANECA FRONTAL  (cx ≈ 280)
-  ════════════════════════════════════════ -->
-  <g transform="translate(100, 58)" filter="url(#sombra)">
 
-    <!-- corpo trapezoidal slim (levemente cônico) -->
-    <path d="M 28,20
-             Q 28,13  38,13
-             L 302,13
-             Q 312,13  312,20
-             L 320,342
-             Q 320,352  310,352
-             L 30,352
-             Q 20,352  20,342 Z"
-          fill="url(#bodyF)" stroke="#bbbbbb" stroke-width="0.7"/>
+  <!-- ═══════════════════════════════════════════════
+       CANECA FRONTAL  — estilo foto referência
+  ═══════════════════════════════════════════════ -->
+  <g transform="translate(80, 48)" filter="url(#shadow)">
 
-    <!-- elipse boca topo -->
-    <ellipse cx="170" cy="15"  rx="143" ry="15" fill="url(#rimG)" stroke="#b0b0b0" stroke-width="0.6"/>
-    <ellipse cx="170" cy="15"  rx="128" ry="10" fill="#e0e0e0"/>
-    <ellipse cx="170" cy="17"  rx="125" ry="8"  fill="#d2d2d2"/>
+    <!-- CORPO — forma mais quadrada / latte mug -->
+    <path d="M 40,28
+             Q 40,20  50,20
+             L 370,20
+             Q 380,20  380,28
+             L 388,468
+             Q 388,478  378,478
+             L 42,478
+             Q 32,478  32,468 Z"
+          fill="url(#mugBody)" stroke="#c8c8c8" stroke-width="0.8"/>
+
+    <!-- elipse boca -->
+    <ellipse cx="210" cy="22" rx="172" ry="17" fill="url(#mugTop)" stroke="#b8b8b8" stroke-width="0.6"/>
+    <ellipse cx="210" cy="22" rx="156" ry="12" fill="url(#innerMouth)"/>
+    <ellipse cx="210" cy="24" rx="153" ry="9"  fill="#b8b8b8"/>
 
     <!-- elipse base -->
-    <ellipse cx="170" cy="350" rx="150" ry="11" fill="url(#baseG)" stroke="#b0b0b0" stroke-width="0.6"/>
+    <ellipse cx="210" cy="472" rx="180" ry="12" fill="#c8c8c8" stroke="#b8b8b8" stroke-width="0.6"/>
 
-    <!-- ── ARTE IMPRESSA ── -->
+    <!-- ══ ARTE IMPRESSA — estilo da foto ══ -->
 
-    <!-- linha vermelha superior -->
-    <line x1="62"  y1="130" x2="286" y2="130" stroke="#C8102E" stroke-width="1.6"/>
-
-    <!-- CLEVERSON -->
-    <text x="62" y="190"
-          font-family="'Arial Black', Impact, sans-serif"
-          font-size="32"
+    <!-- "Cleverson" mixed case, bold, grande -->
+    <text x="72" y="218"
+          font-family="'Arial Black','Helvetica Neue',Arial,sans-serif"
+          font-size="58"
           font-weight="900"
-          fill="#0A0A0A"
-          letter-spacing="8"
-          text-anchor="start">CLEVERSON</text>
+          fill="#111111">Cleverson</text>
 
-    <!-- linha vermelha inferior -->
-    <line x1="50"  y1="205" x2="286" y2="205" stroke="#C8102E" stroke-width="1.6"/>
+    <!-- underline vermelho fino (como na foto) -->
+    <rect x="72" y="228" width="76" height="4" fill="#C8102E" rx="1"/>
 
-    <!-- slogan -->
-    <text x="62" y="232"
-          font-family="Georgia,'Times New Roman',serif"
-          font-style="italic"
-          font-size="13.5"
-          fill="#3A3A3A"
-          letter-spacing="0.8">uma vez flamengo,</text>
-    <text x="58" y="251"
-          font-family="Georgia,'Times New Roman',serif"
-          font-style="italic"
-          font-size="13.5"
-          fill="#3A3A3A"
-          letter-spacing="0.8">sempre flamengo.</text>
+    <!-- slogan — fonte leve -->
+    <text x="72" y="270"
+          font-family="Arial,Helvetica,sans-serif"
+          font-size="16"
+          font-weight="300"
+          fill="#444444"
+          letter-spacing="0.3">Uma vez Flamengo, sempre Flamengo.</text>
+
+    <!-- "Sogrão" — pequeno, canto inferior esquerdo -->
+    <text x="72" y="436"
+          font-family="Arial,Helvetica,sans-serif"
+          font-size="13"
+          font-weight="300"
+          fill="#999999"
+          letter-spacing="0.5">Sogrão</text>
 
     <!-- ── CABO ── -->
-    <path d="M 315,100 Q 390,100 390,175 Q 390,250 315,250"
-          fill="none" stroke="url(#canoG)" stroke-width="26" stroke-linecap="round"/>
-    <path d="M 315,100 Q 378,100 378,175 Q 378,250 315,250"
-          fill="none" stroke="#efefef" stroke-width="12" stroke-linecap="round"/>
+    <path d="M 383,120 Q 470,120 470,210 Q 470,300 383,300"
+          fill="none" stroke="url(#handle)" stroke-width="34"
+          stroke-linecap="round"/>
+    <path d="M 383,120 Q 454,120 454,210 Q 454,300 383,300"
+          fill="none" stroke="#f2f2f2" stroke-width="14"
+          stroke-linecap="round"/>
 
     <!-- reflexos corpo -->
-    <path d="M 44,28  Q 41,185  46,335" stroke="rgba(255,255,255,0.7)" stroke-width="5"
+    <path d="M 56,36  Q 53,250  58,460"
+          stroke="rgba(255,255,255,0.72)" stroke-width="6"
           fill="none" stroke-linecap="round"/>
-    <path d="M 110,18 Q 107,185 112,345" stroke="rgba(255,255,255,0.18)" stroke-width="9"
+    <path d="M 130,26 Q 127,250 132,470"
+          stroke="rgba(255,255,255,0.2)" stroke-width="10"
           fill="none" stroke-linecap="round"/>
   </g>
 
-  <!-- label frontal -->
-  <text x="310" y="444" font-family="Arial,sans-serif" font-size="9"
-        fill="#444" letter-spacing="4" text-anchor="middle">VISTA FRONTAL</text>
+  <!-- label -->
+  <text x="298" y="558" font-family="Arial,sans-serif" font-size="9"
+        fill="#bbb" letter-spacing="4" text-anchor="middle">FRENTE</text>
 
-  <!-- ════════════════════════════════════════
-       CANECA LATERAL  (cx ≈ 730)
-  ════════════════════════════════════════ -->
-  <g transform="translate(560, 78)" filter="url(#sombraLeve)">
 
-    <!-- corpo lateral — mais estreito -->
-    <path d="M 18,18
-             Q 18,12  26,12
-             L 230,12
-             Q 238,12  238,18
-             L 244,318
-             Q 244,326  236,326
-             L 22,326
-             Q 14,326  14,318 Z"
-          fill="url(#bodyS)" stroke="#bbbbbb" stroke-width="0.6"/>
+  <!-- ═══════════════════════════════════════════════
+       CANECA TRASEIRA — escudo do Flamengo
+  ═══════════════════════════════════════════════ -->
+  <g transform="translate(570, 60)" filter="url(#shadowB)">
+
+    <!-- corpo -->
+    <path d="M 34,24
+             Q 34,16  44,16
+             L 330,16
+             Q 340,16  340,24
+             L 347,452
+             Q 347,462  337,462
+             L 37,462
+             Q 27,462  27,452 Z"
+          fill="url(#mugBody)" stroke="#c8c8c8" stroke-width="0.8"/>
 
     <!-- boca -->
-    <ellipse cx="129" cy="14"  rx="112" ry="12" fill="url(#rimG)" stroke="#b0b0b0" stroke-width="0.5"/>
-    <ellipse cx="129" cy="14"  rx="99"  ry="8"  fill="#e0e0e0"/>
-    <ellipse cx="129" cy="16"  rx="97"  ry="6"  fill="#d2d2d2"/>
+    <ellipse cx="187" cy="18" rx="155" ry="15" fill="url(#mugTop)" stroke="#b8b8b8" stroke-width="0.6"/>
+    <ellipse cx="187" cy="18" rx="140" ry="11" fill="url(#innerMouth)"/>
+    <ellipse cx="187" cy="20" rx="137" ry="8"  fill="#b8b8b8"/>
 
     <!-- base -->
-    <ellipse cx="129" cy="324" rx="116" ry="9" fill="url(#baseG)" stroke="#b0b0b0" stroke-width="0.5"/>
+    <ellipse cx="187" cy="456" rx="162" ry="11" fill="#c8c8c8" stroke="#b8b8b8" stroke-width="0.6"/>
 
-    <!-- ── "sogrão" ── -->
-    <line x1="94"  y1="300" x2="164" y2="300" stroke="#dedede" stroke-width="0.7"/>
-    <text x="129" y="316"
+    <!-- ══ ESCUDO FLAMENGO ══ -->
+    <g transform="translate(187,230) scale(1.3)">
+      {FLAMENGO_CREST}
+    </g>
+
+    <!-- "Clube de Regatas do Flamengo" micro texto abaixo do escudo -->
+    <text x="187" y="362"
           font-family="Arial,Helvetica,sans-serif"
+          font-size="8.5"
           font-weight="300"
-          font-size="9"
-          fill="#999999"
-          letter-spacing="3.5"
-          text-anchor="middle">sogrão</text>
+          fill="#bbb"
+          text-anchor="middle"
+          letter-spacing="1.5">CLUBE DE REGATAS DO FLAMENGO</text>
 
-    <!-- cabo lateral -->
-    <path d="M 242,88  Q 296,88  296,158 Q 296,228 242,228"
-          fill="none" stroke="url(#canoG)" stroke-width="20" stroke-linecap="round"/>
-    <path d="M 242,88  Q 285,88  285,158 Q 285,228 242,228"
-          fill="none" stroke="#efefef" stroke-width="9" stroke-linecap="round"/>
+    <!-- cabo traseiro -->
+    <path d="M 343,108 Q 420,108 420,196 Q 420,284 343,284"
+          fill="none" stroke="url(#handle)" stroke-width="30"
+          stroke-linecap="round"/>
+    <path d="M 343,108 Q 408,108 408,196 Q 408,284 343,284"
+          fill="none" stroke="#f2f2f2" stroke-width="12"
+          stroke-linecap="round"/>
 
-    <!-- reflexo -->
-    <path d="M 30,24  Q 28,168  33,310" stroke="rgba(255,255,255,0.65)" stroke-width="4"
+    <!-- reflexos -->
+    <path d="M 50,30  Q 47,235  52,445"
+          stroke="rgba(255,255,255,0.70)" stroke-width="5"
+          fill="none" stroke-linecap="round"/>
+    <path d="M 115,22 Q 112,235 117,454"
+          stroke="rgba(255,255,255,0.18)" stroke-width="9"
           fill="none" stroke-linecap="round"/>
   </g>
 
-  <!-- label lateral -->
-  <text x="730" y="444" font-family="Arial,sans-serif" font-size="9"
-        fill="#444" letter-spacing="4" text-anchor="middle">VISTA LATERAL · detalhe "sogrão"</text>
+  <!-- label -->
+  <text x="798" y="558" font-family="Arial,sans-serif" font-size="9"
+        fill="#bbb" letter-spacing="4" text-anchor="middle">VERSO</text>
 
-  <!-- ════════════════════════════════════════
-       PAINEL SPECS — RODAPÉ
-  ════════════════════════════════════════ -->
-  <line x1="60" y1="465" x2="940" y2="465" stroke="#272727" stroke-width="1"/>
-
-  <!-- TIPOGRAFIA -->
-  <text x="90" y="487" font-family="Arial,sans-serif" font-size="8"
-        fill="#C8102E" letter-spacing="3">TIPOGRAFIA</text>
-  <text x="90" y="503" font-family="Arial,sans-serif" font-size="10" fill="#555">Nome · Arial Black / Barlow Condensed ExtraBold</text>
-  <text x="90" y="518" font-family="Arial,sans-serif" font-size="10" fill="#555">Slogan · Georgia Light Italic · cinza #3A3A3A</text>
-  <text x="90" y="533" font-family="Arial,sans-serif" font-size="10" fill="#555">Sogrão · Inter Light · 8–9pt · cinza #999</text>
-
-  <!-- PALETA -->
-  <text x="420" y="487" font-family="Arial,sans-serif" font-size="8"
-        fill="#C8102E" letter-spacing="3">PALETA</text>
-
-  <!-- swatches -->
-  <circle cx="426" cy="508" r="10" fill="#0A0A0A"/>
-  <text x="426" y="527" font-family="Arial,sans-serif" font-size="8" fill="#444" text-anchor="middle">#0A0A0A</text>
-
-  <circle cx="460" cy="508" r="10" fill="#C8102E"/>
-  <text x="460" y="527" font-family="Arial,sans-serif" font-size="8" fill="#444" text-anchor="middle">#C8102E</text>
-
-  <circle cx="494" cy="508" r="10" fill="#3A3A3A"/>
-  <text x="494" y="527" font-family="Arial,sans-serif" font-size="8" fill="#444" text-anchor="middle">#3A3A3A</text>
-
-  <circle cx="528" cy="508" r="10" fill="#999999"/>
-  <text x="528" y="527" font-family="Arial,sans-serif" font-size="8" fill="#444" text-anchor="middle">#999999</text>
-
-  <circle cx="562" cy="508" r="10" fill="#FFFFFF" stroke="#333" stroke-width="0.8"/>
-  <text x="562" y="527" font-family="Arial,sans-serif" font-size="8" fill="#444" text-anchor="middle">#FFFFFF</text>
-
-  <!-- HIERARQUIA -->
-  <text x="680" y="487" font-family="Arial,sans-serif" font-size="8"
-        fill="#C8102E" letter-spacing="3">HIERARQUIA VISUAL</text>
-  <text x="680" y="503" font-family="Arial,sans-serif" font-size="10" fill="#555">1 · CLEVERSON — impacto imediato</text>
-  <text x="680" y="518" font-family="Arial,sans-serif" font-size="10" fill="#555">2 · Linhas vermelhas — identidade esportiva</text>
-  <text x="680" y="533" font-family="Arial,sans-serif" font-size="10" fill="#555">3 · Slogan italic · 4 · "sogrão" easter egg</text>
 </svg>"""
 
-png = cairosvg.svg2png(bytestring=SVG.encode(), output_width=2000, output_height=1200)
+png = cairosvg.svg2png(bytestring=SVG.encode(), output_width=2200, output_height=1160)
 
 out = "/home/user/caio/caneca-preview.png"
 with open(out, "wb") as f:
