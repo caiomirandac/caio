@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Caneca Cleverson — Flamengo Edition</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@800&family=Cormorant+Garamond:ital,wght@1,300&family=Inter:wght@300&display=swap" rel="stylesheet"/>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #1a1a1a;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Inter', sans-serif;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      color: #888;
+      font-size: 11px;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      margin-bottom: 60px;
+      font-weight: 300;
+    }
+
+    .scene {
+      display: flex;
+      gap: 80px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .view-label {
+      color: #555;
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 20px;
+      font-weight: 300;
+    }
+
+    /* ─── CANECA SVG wrapper ─── */
+    .mug-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    svg.mug {
+      filter: drop-shadow(0 30px 60px rgba(0,0,0,0.6));
+    }
+
+    /* ─── texto dentro do SVG ─── */
+    .name-text {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 42px;
+      fill: #0A0A0A;
+      letter-spacing: 8px;
+      text-transform: uppercase;
+    }
+
+    .slogan-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 300;
+      font-size: 13px;
+      fill: #3A3A3A;
+      letter-spacing: 1px;
+    }
+
+    .sograo-text {
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      font-size: 9px;
+      fill: #999;
+      letter-spacing: 2px;
+    }
+
+    /* ─── painel de especificações ─── */
+    .specs {
+      margin-top: 70px;
+      border-top: 1px solid #2a2a2a;
+      padding-top: 40px;
+      display: flex;
+      gap: 60px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .spec-block h3 {
+      color: #C8102E;
+      font-size: 9px;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      font-weight: 300;
+    }
+
+    .spec-block p {
+      color: #666;
+      font-size: 11px;
+      line-height: 1.9;
+      font-weight: 300;
+    }
+
+    .palette {
+      display: flex;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .swatch {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid #333;
+    }
+
+    footer {
+      margin-top: 60px;
+      color: #333;
+      font-size: 10px;
+      letter-spacing: 0.3em;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Cleverson — Flamengo Edition · Design Preview</h1>
+
+  <div class="scene">
+
+    <!-- ═══════════════════════════════
+         VISTA FRONTAL
+    ═══════════════════════════════ -->
+    <div class="mug-wrap">
+      <p class="view-label">Vista Frontal</p>
+
+      <svg class="mug" width="340" height="400" viewBox="0 0 340 400" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <!-- gradiente corpo da caneca -->
+          <linearGradient id="bodyGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%"   stop-color="#e8e8e8"/>
+            <stop offset="15%"  stop-color="#ffffff"/>
+            <stop offset="85%"  stop-color="#ffffff"/>
+            <stop offset="100%" stop-color="#d0d0d0"/>
+          </linearGradient>
+          <!-- gradiente borda superior -->
+          <linearGradient id="rimGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%"   stop-color="#c0c0c0"/>
+            <stop offset="50%"  stop-color="#f5f5f5"/>
+            <stop offset="100%" stop-color="#b0b0b0"/>
+          </linearGradient>
+          <!-- gradiente base -->
+          <linearGradient id="baseGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%"   stop-color="#ddd"/>
+            <stop offset="100%" stop-color="#bbb"/>
+          </linearGradient>
+          <!-- clip do corpo -->
+          <clipPath id="bodyClip">
+            <path d="M55,55 Q55,50 65,50 L270,50 Q280,50 280,55 L290,340 Q290,350 280,350 L55,350 Q45,350 45,340 Z"/>
+          </clipPath>
+          <!-- sombra suave interna -->
+          <filter id="innerShadow">
+            <feGaussianBlur stdDeviation="3" result="blur"/>
+          </filter>
+        </defs>
+
+        <!-- ── Corpo da caneca ── -->
+        <path d="M55,55 Q55,50 65,50 L270,50 Q280,50 280,55 L290,340 Q290,350 280,350 L55,350 Q45,350 45,340 Z"
+              fill="url(#bodyGrad)" stroke="#ccc" stroke-width="0.5"/>
+
+        <!-- ── Elipse topo ── -->
+        <ellipse cx="167" cy="52" rx="112" ry="14" fill="url(#rimGrad)" stroke="#bbb" stroke-width="0.5"/>
+        <!-- interior boca -->
+        <ellipse cx="167" cy="52" rx="100" ry="10" fill="#e0e0e0"/>
+        <ellipse cx="167" cy="54" rx="98" ry="8"  fill="#d0d0d0"/>
+
+        <!-- ── Base ── -->
+        <ellipse cx="167" cy="348" rx="115" ry="10" fill="url(#baseGrad)" stroke="#bbb" stroke-width="0.5"/>
+
+        <!-- ════════════════════════════
+             DESIGN IMPRESSO — FRENTE
+        ════════════════════════════ -->
+
+        <!-- Linha vermelha superior -->
+        <line x1="80" y1="138" x2="252" y2="138" stroke="#C8102E" stroke-width="1.2"/>
+
+        <!-- Nome CLEVERSON -->
+        <text x="167" y="196" class="name-text" text-anchor="middle">CLEVERSON</text>
+
+        <!-- Linha vermelha inferior -->
+        <line x1="80" y1="210" x2="252" y2="210" stroke="#C8102E" stroke-width="1.2"/>
+
+        <!-- Slogan linha 1 -->
+        <text x="88" y="238" class="slogan-text">uma vez flamengo,</text>
+        <!-- Slogan linha 2 -->
+        <text x="88" y="256" class="slogan-text">sempre flamengo.</text>
+
+        <!-- ── Cabo ── -->
+        <path d="M280,110 Q340,110 340,170 Q340,230 280,230"
+              fill="none" stroke="#ccc" stroke-width="22" stroke-linecap="round"/>
+        <path d="M280,110 Q330,110 330,170 Q330,230 280,230"
+              fill="none" stroke="#f0f0f0" stroke-width="10" stroke-linecap="round"/>
+
+        <!-- reflexo lateral esquerdo -->
+        <path d="M65,70 Q62,200 68,330" stroke="rgba(255,255,255,0.7)" stroke-width="4" fill="none" stroke-linecap="round"/>
+
+        <!-- reflexo sutil no meio -->
+        <path d="M130,58 Q128,200 132,340" stroke="rgba(255,255,255,0.25)" stroke-width="8" fill="none" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <!-- ═══════════════════════════════
+         VISTA LATERAL (com "sogrão")
+    ═══════════════════════════════ -->
+    <div class="mug-wrap">
+      <p class="view-label">Vista Lateral · Detalhe "sogrão"</p>
+
+      <svg class="mug" width="240" height="400" viewBox="0 0 240 400" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="sideGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%"   stop-color="#d8d8d8"/>
+            <stop offset="30%"  stop-color="#f8f8f8"/>
+            <stop offset="70%"  stop-color="#f8f8f8"/>
+            <stop offset="100%" stop-color="#c8c8c8"/>
+          </linearGradient>
+          <linearGradient id="rimSideGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%"   stop-color="#b0b0b0"/>
+            <stop offset="50%"  stop-color="#eeeeee"/>
+            <stop offset="100%" stop-color="#a0a0a0"/>
+          </linearGradient>
+        </defs>
+
+        <!-- corpo -->
+        <path d="M30,55 Q30,50 40,50 L195,50 Q205,50 205,55 L212,340 Q212,350 202,350 L38,350 Q28,350 28,340 Z"
+              fill="url(#sideGrad)" stroke="#ccc" stroke-width="0.5"/>
+
+        <!-- topo -->
+        <ellipse cx="121" cy="52" rx="81" ry="11" fill="url(#rimSideGrad)" stroke="#bbb" stroke-width="0.5"/>
+        <ellipse cx="121" cy="52" rx="71"  ry="8"  fill="#e0e0e0"/>
+        <ellipse cx="121" cy="54" rx="69"  ry="6"  fill="#d0d0d0"/>
+
+        <!-- base -->
+        <ellipse cx="121" cy="348" rx="84" ry="8" fill="#ccc" stroke="#bbb" stroke-width="0.5"/>
+
+        <!-- ════════════
+             "sogrão"
+        ════════════ -->
+        <text x="121" y="318" class="sograo-text" text-anchor="middle" letter-spacing="3">sogrão</text>
+
+        <!-- linha decorativa mínima acima do sogrão -->
+        <line x1="90" y1="305" x2="152" y2="305" stroke="#ddd" stroke-width="0.5"/>
+
+        <!-- cabo lateral -->
+        <path d="M205,110 Q240,110 240,170 Q240,230 205,230"
+              fill="none" stroke="#ccc" stroke-width="18" stroke-linecap="round"/>
+        <path d="M205,110 Q232,110 232,170 Q232,230 205,230"
+              fill="none" stroke="#ececec" stroke-width="8" stroke-linecap="round"/>
+
+        <!-- reflexo -->
+        <path d="M48,68 Q46,200 50,330" stroke="rgba(255,255,255,0.6)" stroke-width="3" fill="none" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+  </div>
+
+  <!-- ═══════════════════════════════
+       ESPECIFICAÇÕES
+  ═══════════════════════════════ -->
+  <div class="specs">
+
+    <div class="spec-block">
+      <h3>Tipografia</h3>
+      <p>
+        Nome · Barlow Condensed ExtraBold<br/>
+        Slogan · Cormorant Garamond Light Italic<br/>
+        Sogrão · Inter Light
+      </p>
+    </div>
+
+    <div class="spec-block">
+      <h3>Paleta</h3>
+      <div class="palette">
+        <div class="swatch" style="background:#0A0A0A;" title="Preto #0A0A0A"></div>
+        <div class="swatch" style="background:#C8102E;" title="Vermelho Flamengo #C8102E"></div>
+        <div class="swatch" style="background:#3A3A3A;" title="Cinza escuro #3A3A3A"></div>
+        <div class="swatch" style="background:#999999;" title="Cinza suave #999"></div>
+        <div class="swatch" style="background:#FFFFFF; border:1px solid #444;" title="Branco #FFF"></div>
+      </div>
+    </div>
+
+    <div class="spec-block">
+      <h3>Hierarquia Visual</h3>
+      <p>
+        1 · CLEVERSON — impacto imediato<br/>
+        2 · Linhas vermelhas — identidade esportiva<br/>
+        3 · Slogan — descoberta afetiva<br/>
+        4 · sogrão — easter egg pessoal
+      </p>
+    </div>
+
+    <div class="spec-block">
+      <h3>Produção</h3>
+      <p>
+        Técnica · Sublimação cerâmica<br/>
+        Caneca · Slim cônica 300ml<br/>
+        Arquivo · Vetor AI / PDF CMYK<br/>
+        Resolução · 300dpi mínimo
+      </p>
+    </div>
+
+  </div>
+
+  <footer>© Design Preview — Cleverson Flamengo Edition</footer>
+
+</body>
+</html>
